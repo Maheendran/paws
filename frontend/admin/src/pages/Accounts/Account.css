@@ -1,0 +1,15 @@
+.heading {
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: none;
+}
+.active_heading {
+  transition: 0.5s ease-in-out;
+  cursor: pointer;
+  padding: 7px 14px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  background-color: rgb(41, 41, 41);
+}

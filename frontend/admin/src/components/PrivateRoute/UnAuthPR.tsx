@@ -15,7 +15,7 @@ const UnAuthPR: React.FC<AuthPRProps> = (props: any) => {
   useEffect(() => {
     dispatch(currentUserDetail());
     if (!auth.token) {
-      <Outlet />;
+      <Outlet/>;
     } else {
       navigate("/");
     }

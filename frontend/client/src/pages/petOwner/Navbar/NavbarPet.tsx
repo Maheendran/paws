@@ -1,47 +1,127 @@
 import React from "react";
 import "./NavbarPet.css";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
-import { BiLogOutCircle } from "react-icons/bi";
+import { NavLink, useNavigate } from "react-router-dom";
+import { BiSolidUserCircle } from "react-icons/bi";
+import { AiOutlineUser, AiOutlineLogout } from "react-icons/ai";
+import { FaRupeeSign } from "react-icons/fa";
 import { useAppDispatch } from "../../../Redux/Store";
 import { logoutUser } from "../../../Redux/Slice/AuthSlice";
 const NavbarPet: React.FC = () => {
+  const handleservice = (value: string) => {
+    if (value === "clinic") {
+      navigate("/search/clinic");
+    } else {
+      navigate("/search/grooming");
+    }
+  };
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/register");
   };
+
   return (
     <>
-      <div className="navbar_main container-fluid">
-        <div className="row">
-          <div className="col-3 nav_logo">
-            <NavLink to={"/pet-owner"}>
-              <img className="img-fluid" src="../assests/logo.png" alt="" />
-            </NavLink>
-          </div>
-
-          <div className="col-6 d-flex justify-content-center m-auto">
-            <button className="mx-2 nav_head_btn">clinic</button>
-
-            <button className="mx-2 nav_head_btn">groom</button>
-          </div>
-
-          <div className="col-3 text-end d-flex justify-content-end m-auto">
-            <button className="btn logout_btn ">
-              <BiLogOutCircle size={"1.5rem"} onClick={handleLogout} />
-            </button>
-            <NavLink to={"/userprofile"}>
-              <div className=" me-auto nav_head_profile">
-                <img
-                  src="https://th.bing.com/th/id/OIP.PJZfVyqI_1Pfc9A8i--VWQHaHa?pid=ImgDet&rs=1"
-                  alt=""
-                />
-              </div>
-            </NavLink>
-          </div>
+      <nav className="navbar navbar-expand-lg navbar-light  ">
+        <div className="col-1">
+          <NavLink className="navbar-brand" to={"/pet-owner"}>
+            <img src="../assests/logo.png" height={40} alt="" />
+          </NavLink>
         </div>
-      </div>
+        <div className="walk_gif col-4">
+          <img src="../../assests/waking.gif" alt="" />
+        </div>
+
+        <button
+          className="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul className="navbar-nav m-auto px-2">
+            <li className="nav-item m-auto">
+              <button
+                className="mx-2 nav_head_btn text-muted"
+                onClick={() => handleservice("clinic")}
+              >
+                clinic
+              </button>
+            </li>
+            <li className="nav-item m-auto">
+              <button
+                className="mx-2 nav_head_btn text-muted"
+                onClick={() => handleservice("groom")}
+              >
+                groom
+              </button>
+            </li>
+          </ul>
+          <ul>
+            <div className="btn-group btn_dropdown">
+              <button
+                type="button"
+                className="profile_nav_btn dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <BiSolidUserCircle size={"1.5rem"} />
+              </button>
+              <div className="dropdown-menu dropdown-menu-right dropdown_link">
+                <li className="nav-item m-auto mt-2">
+                  <NavLink to={"/userprofile"}>
+                    Profile{" "}
+                    <span>
+                      {" "}
+                      <AiOutlineUser />{" "}
+                    </span>
+                  </NavLink>
+                </li>
+                <li className="nav-item m-auto mt-2">
+                  <NavLink to={"/clinic-payments"}>
+                    Payments{" "}
+                    <span>
+                      <FaRupeeSign />{" "}
+                    </span>
+                  </NavLink>
+                </li>
+                <li className="nav-item  mx-2 mt-2" onClick={handleLogout}>
+                  Logout{" "}
+                  <span>
+                    {" "}
+                    <AiOutlineLogout />{" "}
+                  </span>
+                </li>
+              </div>
+            </div>
+
+            <div className="mob_nav_box m-auto">
+              <li className="nav-item m-auto">
+                <NavLink to={"/booking"}>Porfile</NavLink>{" "}
+              </li>
+              <li className="nav-item m-auto">
+                <NavLink to={"/"}>Payments</NavLink>{" "}
+              </li>
+              <li className="nav-item  mx-2 mt-2" onClick={handleLogout}>
+                Logout{" "}
+                <span>
+                  {" "}
+                  <AiOutlineLogout />{" "}
+                </span>
+              </li>
+            </div>
+          </ul>
+        </div>
+      </nav>
     </>
   );
 };

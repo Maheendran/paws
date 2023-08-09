@@ -1,65 +1,34 @@
-import React from "react";
-import "../../styles/Menu.css";
-
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import "./menu.scss";
+import { menu } from "../../data";
 import { useAppDispatch } from "../../Redux/Store";
 import { logoutUser } from "../../Redux/Slice/AuthSlice";
+
 const Menu = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const handlelogout = () => {
-    dispatch(logoutUser());
-    navigate("/login");
-  };
-
+  const navigate=useNavigate()
+  const dispatch=useAppDispatch()
+  const handlelogout=()=>{
+dispatch(logoutUser())
+    navigate('/login')
+  }
   return (
-    <>
-      <div className="sidebar bg-dark">
-        <i className="bx bx-code-alt"></i>
-        <div className="logo-name">
-          <span>Asmr</span>Prog
+    <div className="menu">
+      {menu.map((item) => (
+        <div className="item" key={item.id}>
+          <span className="title">{item.title}</span>
+          {item.listItems.map((listItem) => (
+            <Link to={listItem.url} className="listItem" key={listItem.id}>
+              <img src={listItem.icon} alt="" />
+              <span className="listItemTitle">{listItem.title}</span>
+            </Link>
+          ))}
         </div>
+      ))}
 
-        <ul className="side-menu">
-          <li className="active">
-            <NavLink to={"/"}>
-              <i className="bx bx-store-alt"></i>Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/account"}>
-              <i className="bx bx-store-alt"></i>Accounts
-            </NavLink>
-          </li>
-          <li className="">
-            <NavLink to={"/"}>
-              <i className="bx bx-store-alt"></i>Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/account"}>
-              <i className="bx bx-store-alt"></i>Accounts
-            </NavLink>
-          </li>
-          <li className="">
-            <NavLink to={"/"}>
-              <i className="bx bx-store-alt"></i>Dashboard
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to={"/account"}>
-              <i className="bx bx-store-alt"></i>Accounts
-            </NavLink>
-          </li>
-        </ul>
-        <ul className="side-menu logout_btn">
-          <li onClick={handlelogout}>
-            <i className="bx bx-log-out-circle"></i>
-            Logout
-          </li>
-        </ul>
-      </div>
-    </>
+
+      <p className="text-light text-end mx-auto" style={{cursor:"pointer"}} onClick={handlelogout}> <span> <img src='../user.svg' alt="" /></span> logout</p>
+    </div>
+
   );
 };
 

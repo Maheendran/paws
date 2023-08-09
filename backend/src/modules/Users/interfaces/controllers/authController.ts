@@ -23,6 +23,7 @@ import {
   resetPasswordGroom,
   resetPasswordClinic,
 } from "../../usecases/userAuth";
+import { errorHandler } from "../../middlewares/errorMiddleware";
 
 export const userRegister = async (req: Request, res: Response) => {
   try {
@@ -38,7 +39,7 @@ export const userRegister = async (req: Request, res: Response) => {
       res.send(user);
     }
   } catch (error: any) {
-    res.json({ message: error.message });
+    errorHandler(error,req,res)
   }
 };
 
@@ -56,7 +57,7 @@ export const otpVerification = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     console.error(error);
-    res.json({ message: error.message });
+    errorHandler(error,req,res)
   }
 };
 
@@ -74,7 +75,7 @@ export const resendOtp = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     console.error(error);
-    res.json({ message: error.message });
+    errorHandler(error,req,res)
   }
 };
 
@@ -92,11 +93,14 @@ export const userLogin = async (req: Request, res: Response) => {
     }
   } catch (error: any) {
     console.error(error);
-    res.json({ message: error.message });
+    errorHandler(error,req,res)
   }
 };
 // jwt check current user
 export const googleSignIn = async (req: Request, res: Response) => {
+  try {
+    
+ 
   if (req.body.accountType === "PetOwner") {
     const user = await googlePetOwner(req.body);
     res.send(user);
@@ -106,31 +110,42 @@ export const googleSignIn = async (req: Request, res: Response) => {
   } else if (req.body.accountType === "Clinic") {
     const user = await googleClinic(req.body);
     res.send(user);
+  } } catch (error) {
+    errorHandler(error,req,res)
   }
 };
 // forgot password otp sending
 export const forgotPasswordOtp = async (req: Request, res: Response) => {
-  if (req.body.accountType === "PetOwner") {
-    const user = await forgotUserOtp(req.body);
-    res.send(user);
-  } else if (req.body.accountType === "Grooming") {
-    const user = await forgotGroomOtp(req.body);
-    res.send(user);
-  } else if (req.body.accountType === "Clinic") {
-    const user = await forgotClinicOtp(req.body);
-    res.send(user);
+  try {
+    if (req.body.accountType === "PetOwner") {
+      const user = await forgotUserOtp(req.body);
+      res.send(user);
+    } else if (req.body.accountType === "Grooming") {
+      const user = await forgotGroomOtp(req.body);
+      res.send(user);
+    } else if (req.body.accountType === "Clinic") {
+      const user = await forgotClinicOtp(req.body);
+      res.send(user);
+    }
+  } catch (error) {
+    errorHandler(error,req,res)
   }
+ 
 };
 // pending===============
 export const resetPassword = async (req: Request, res: Response) => {
-  if (req.body.accountType === "PetOwner") {
-    const user = await resetPasswordUser(req.body);
-    res.send(user);
-  } else if (req.body.accountType === "Grooming") {
-    const user = await resetPasswordGroom(req.body);
-    res.send(user);
-  } else if (req.body.accountType === "Clinic") {
-    const user = await resetPasswordClinic(req.body);
-    res.send(user);
+  try {
+    if (req.body.accountType === "PetOwner") {
+      const user = await resetPasswordUser(req.body);
+      res.send(user);
+    } else if (req.body.accountType === "Grooming") {
+      const user = await resetPasswordGroom(req.body);
+      res.send(user);
+    } else if (req.body.accountType === "Clinic") {
+      const user = await resetPasswordClinic(req.body);
+      res.send(user);
+    }
+  } catch (error) {
+    errorHandler(error,req,res)
   }
 };

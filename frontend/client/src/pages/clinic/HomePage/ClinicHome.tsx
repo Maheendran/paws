@@ -1,11 +1,9 @@
 import React from "react";
 
-import NavbarPet from "../../petOwner/Navbar/NavbarPet";
-
-const ClinicHome = () => {
+const ClinicHome:React.FC = () => {
+  
   return (
     <>
-      <NavbarPet />
       <div className="container">
         <div className="row">
           <h1>welcome clinic </h1>

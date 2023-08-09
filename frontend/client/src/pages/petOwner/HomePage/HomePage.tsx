@@ -7,35 +7,11 @@ import { motion } from "framer-motion";
 import "./HomePage.css";
 import { useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+import { CardRight } from "../../../components/Cards/CardRight";
+import Cardleft from "../../../components/Cards/Cardleft";
 
 const HomePage = () => {
-  const animationreverse = useAnimation();
 
-  const { ref, inView } = useInView({
-    threshold: 0.5,
-  });
-  useEffect(() => {
-    if (inView) {
-      animationreverse.start({
-        bottom: 0,
-        transition: {
-          type: "spring",
-          duration: 3,
-          bounce: 0.2,
-        },
-      });
-    }
-    if (!inView) {
-      animationreverse.start({
-        bottom: "-80vh",
-        transition: {
-          type: "spring",
-          duration: 3,
-          bounce: 0.2,
-        },
-      });
-    }
-  }, [inView]);
 
   // ======================
   const dispatch = useAppDispatch();
@@ -53,8 +29,8 @@ const HomePage = () => {
 
   return (
     <>
-      <NavbarPet />
-      <div className="user_banner container-fluid">
+      {/* <NavbarPet /> */}
+      {/* <div className="user_banner container-fluid">
         <div
           id="carouselExampleControls"
           className="carousel slide "
@@ -108,27 +84,87 @@ const HomePage = () => {
             <span className="sr-only">Next</span>
           </a>
         </div>
-      </div>
+      </div> */}
       <div className="homepage">
-        {/* */}
-        <div className=" container-fluid">
-          <div className="row add_pet_box" ref={ref}>
-            <div className="col-4 m-auto">
-              <div className="add_pet_detail m-auto ">
-                <p className="text-center m-auto">Add pet details</p>
-              </div>
-            </div>
+<div className="homepage_bg">
+  <img src="../assests/Vector 1.png" alt="" />
+  <div className="bg_paws">
+    <img src="../assests/semi.png" alt="" />
+  </div>
+  <div className="bg_violet_paws">
+    <img src="../assests/paw1.png" alt="" />
+  </div>
+</div>
+{/* card section */}
 
-            <div className="col-4 me-auto  ">
-              <motion.div
-                className="petAdd_img ms-auto"
-                animate={animationreverse}
-              >
-                <img className="" src="../assests/dog2.png" alt="" />
-              </motion.div>
-            </div>
-          </div>
-        </div>
+
+<div className="container">
+
+
+
+  {/* clinic card */}
+
+  <div className="row card_box m-3">
+    <div className="col-4 m-auto">
+    <img  className="img-fluid" src="../assests/dog2.png" alt="" />
+    </div>
+    
+    <div className="col-10 m-auto d-flex justify-content-center ">
+      <button className="card_btn m-auto ">Add pets details</button>
+    </div>
+  </div> 
+  
+  {/* pet details */}
+   <div className="row card_box">
+    <div className="col-4 ms-auto">
+      <div className="card_clinic_img m-auto">
+            <img  className="img-fluid" src="../assests/dog_grooming 1.png" alt="" />
+      </div>
+
+    </div>
+
+    <div className="col-4 m-auto text-center ">
+     
+      <p className="text-start m-auto text-center" >Instantly Book a Professional 
+Pet Groomer Online, 
+Whenever you need one.</p>
+      <button className="card_btn_clinic m-auto">Book for grooming</button>
+      
+    </div>
+  </div>
+{/* clinic */}
+<div className="row card_box">
+
+
+    <div className="col-12 col-sm-4 m-auto ">
+     
+      <p className="text-center m-auto " >"Effortless pet care at your fingertips - book 
+a professional pet clinic online, anytime, anywhere."</p>
+      <button className="card_btn_clinic  ">Book for grooming</button>
+      
+    </div>
+    <div className="col-12 col-sm-4 me-auto">
+      <div className="card_clinic_img m-auto">
+            <img  className="img-fluid" src="../assests/doctor.png" alt="" />
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
       </div>
     </>
   );

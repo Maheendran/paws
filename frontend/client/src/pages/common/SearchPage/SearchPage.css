@@ -1,0 +1,40 @@
+.search_box{
+height: 50px;
+    display: flex;
+    justify-content: center;
+}
+.search_box button{
+    width: 20%;
+    border-radius: 0px 30px 30px 0px;
+}
+.search_input{
+    height: 100%;
+    width: 70%;
+    border-radius: 30px 0px 0px 30px;
+}
+.place_card{
+    height: 30vh;
+    border: 2px solid rgba(128, 128, 128, 0.384);
+    border-style:dotted;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    border-radius: 10px;
+    padding: 10px;
+    transition: 0.5s ease-in-out;
+}
+.place_card:hover{
+    cursor: pointer;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,inset rgba(0, 0, 0, 0.3) 0px 8px 26px -8px;
+}
+.place_card_img{
+    height: 20vh;
+}
+.place_card_img img{
+    width: 100%;
+    height: 100%;
+}
+
+.map_box{
+    height: 63vh;
+    border: 2px solid;
+    border-radius: 50%;
+}

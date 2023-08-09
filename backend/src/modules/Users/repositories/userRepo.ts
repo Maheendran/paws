@@ -1,7 +1,13 @@
+import { Types } from "mongoose";
 import { verifyEmail } from "../../../services/MailSender";
+import AddressModel, { AddressInterface } from "../entites/AddressModel";
 import ClinicModel, { ClinicInterface } from "../entites/ClinicModel";
+import DoctorModel, { DoctorInterface } from "../entites/DoctorModel";
 import GroomModel, { GroomInterface } from "../entites/GroomModel";
 import userModel, { UserInterface } from "../entites/userModel";
+import { clinicDetail } from "../usecases/UserProfile";
+import ClinicSlot from "../entites/ClinicSlot";
+
 // =============create new users=================
 export const saveUser = async (
   data: UserInterface
@@ -28,7 +34,6 @@ export const saveGroom = async (
   await user.save();
   return { status: "success", message: "created account", data: user };
 };
-
 export const saveClinic = async (
   data: ClinicInterface
 ): Promise<{ status: string; message: string; data: ClinicInterface }> => {
@@ -37,7 +42,7 @@ export const saveClinic = async (
 
   return { status: "success", message: "created account", data: user };
 };
-// google save ===================
+//=========== google save ===================
 export const googlesaveUser = async (
   data: UserInterface
 ): Promise<{
@@ -112,6 +117,7 @@ export const findClinicByEmail = async (
   return await ClinicModel.findOne({ $or: [{ email }, { mobile }] }).exec();
 };
 // ==================find user by email and mobile verified false================
+
 export const forgotpassUser = async (
   email: string
 ): Promise<UserInterface | null> => {
@@ -149,7 +155,7 @@ export const findClinicById = async (
 ): Promise<ClinicInterface | null> => {
   return await ClinicModel.findOne({ _id: userId });
 };
-// update user by id==================
+// ==============update user by id==================
 type UpdateValues = {
   $set: {
     otp?: string;
@@ -157,7 +163,6 @@ type UpdateValues = {
     username?: string;
   };
 };
-
 export const updateGroomingById = async (
   datas: string,
   values: UpdateValues
@@ -176,7 +181,6 @@ export const updateClinicById = async (
 ): Promise<ClinicInterface | null> => {
   return await ClinicModel.findByIdAndUpdate(datas, values, { new: true });
 };
-
 // ========================findOne in user model======================//
 export const findOneInPetOwner = async (
   checkmodel: any
@@ -188,13 +192,12 @@ export const findOneInClinic = async (
 ): Promise<UserInterface | null> => {
   return await ClinicModel.findOne(checkmodel);
 };
-
 export const findOneInGroom = async (
   checkmodel: any
 ): Promise<UserInterface | null> => {
   return await GroomModel.findOne(checkmodel);
 };
-// find by id and delete
+// =======find by id and delete================//
 export const findByIdDeleteUser = async (
   checkmodel: string
 ): Promise<UserInterface | null> => {
@@ -205,9 +208,188 @@ export const findByIdDeleteGroom = async (
 ): Promise<UserInterface | null> => {
   return await GroomModel.findByIdAndDelete(checkmodel);
 };
-
 export const findByIdDeleteClinic = async (
   checkmodel: string
 ): Promise<UserInterface | null> => {
   return await ClinicModel.findByIdAndDelete(checkmodel);
 };
+// ===============update addres in addres model===========
+export const updateAddress = async (
+  _id: string,
+  updateVale: Partial<AddressInterface>
+): Promise<AddressInterface | null> => {
+  return await AddressModel.findByIdAndUpdate(
+    { _id },
+    { ...updateVale },
+    { new: true }
+  );
+};
+export const saveAddress = async (
+  data: AddressInterface
+): Promise<AddressInterface | null> => {
+  const address = new AddressModel({ ...data });
+  return await address.save();
+};
+// ==========get address==================
+export const getUseraddress = async (
+  userId: string
+): Promise<AddressInterface | null> => {
+  return await AddressModel.findOne({ userId: userId });
+};
+export const findservicesaddress = async (
+  userId: string
+): Promise<AddressInterface | null> => {
+  console.log(userId, "service userId");
+  return await AddressModel.findOne({ userId: userId });
+};
+
+// ========= doctor CRUD===========
+
+export const saveDoctor = async (
+  data: DoctorInterface
+): Promise<DoctorInterface | null> => {
+  const doctor = new DoctorModel(data);
+  return await doctor.save();
+};
+export const findAlldoctors = async (clinicId: string) => {
+  return await DoctorModel.find({ clinicId: clinicId });
+};
+export const findAllVerifiedDoctors = async (
+  clinicId: string,
+  verified: string
+) => {
+  return await DoctorModel.find({ clinicId: clinicId, verified: verified });
+};
+export const findByIdUpdatedDoctor = async (
+  Id: String,
+  updatedValue: Partial<DoctorInterface>
+) => {
+  return await DoctorModel.findByIdAndUpdate(
+    Id,
+    { $set: { ...updatedValue } },
+    { new: true }
+  );
+};
+export const findByIdDeleteDoctor = async (doctorId: string) => {
+  return await DoctorModel.findByIdAndDelete(doctorId);
+};
+
+// ==============================service= pending==================================//
+export const getAllClinic = async () => {
+  try {
+    const clinics = await ClinicModel.aggregate([
+      {
+        $match: { verified: true },
+      },
+      {
+        $lookup: {
+          from: "addresses",
+          localField: "_id",
+          foreignField: "userId",
+          as: "address",
+        },
+      },
+    ]);
+    return clinics;
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+export const getAllGrooming = async () => {
+  return await GroomModel.find({ verified: true });
+};
+
+//************* */ get clinic with check with address===============================
+export const getAllClinicByAddress = async (value: any) => {
+  const cityRegex = new RegExp(value.city, "i");
+  return await AddressModel.find({ city: { $regex: cityRegex } });
+};
+export const getAllGroomByAddress = async (value: any) => {
+  const cityRegex = new RegExp(value.city, "i");
+  return await AddressModel.find({ city: { $regex: cityRegex } });
+};
+
+// =======GET DETAIL PAGE================//
+export const findOneClinic = async (id: string) => {
+  const ids = new Types.ObjectId(id);
+  return await ClinicModel.aggregate([
+    { $match: { _id: ids } },
+    {
+      $lookup: {
+        from: "doctors",
+        localField: "_id",
+        foreignField: "clinicId",
+        as: "doctorlist",
+      },
+    },
+    {
+      $lookup: {
+        from: "addresses",
+        localField: "_id",
+        foreignField: "userId",
+        as: "address",
+      },
+    },
+
+    {
+      $match: { "doctorlist.verified": "verified" },
+    },
+  ]);
+};
+export const findOneGrooming = async (id: string) => {
+  return await GroomModel.findOne({ _id: id });
+};
+//=============get clinicslot==================
+type optionValueType = {
+  date: string;
+  clinicId: string;
+};
+export const getClinicSlot = async (optionValue: optionValueType) => {
+  return await ClinicSlot.aggregate([
+    {
+      $match: { ...optionValue },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "Bookings.user_id",
+        foreignField: "_id",
+        as: "user",
+      },
+    },
+  ]);
+};
+export const saveClinicSlot = async (slotdata: any) => {
+  const slot = new ClinicSlot({ ...slotdata });
+  await slot.save();
+};
+type optionValuetype = {
+  date: string;
+  clinicId: string;
+  doctorId: string;
+};
+type updatevalueType = {
+  user_id: string | undefined;
+  time: string;
+  status: string;
+  reason: string;
+};
+export const updateClinicSlot = async (
+  optionValue: optionValuetype,
+  updatevalue: updatevalueType
+) => {
+  return ClinicSlot.updateOne(
+    { ...optionValue },
+    { $push: { Bookings: updatevalue } },
+    { new: true }
+  );
+};
+
+// =======================cancel slot ==========================//
+export const deleteClinicSlot = async (data: clinicDetail) => {
+  return ClinicSlot.updateOne(
+    { date: data.date, clinicId: data.clinicId, doctorId: data.doctorId },
+    { $pull: { Bookings: { time: data.time } } }
+  );
+};
+

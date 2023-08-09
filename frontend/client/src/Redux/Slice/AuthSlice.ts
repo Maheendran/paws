@@ -1,4 +1,4 @@
-import { GoogleLogin } from "@react-oauth/google";
+
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
@@ -145,7 +145,7 @@ export const resetPassword = createAsyncThunk(
   }
 );
 
-export const AuthSlice = createSlice({
+export const AuthSlice= createSlice({
   name: "auth",
   initialState,
   reducers: {

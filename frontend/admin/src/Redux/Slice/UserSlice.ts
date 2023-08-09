@@ -2,7 +2,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setHeaders } from "../Api";
 import axios from "axios";
-
 type userList = {
   _id: string;
   accountType: string;
@@ -15,6 +14,17 @@ type userList = {
   verified: boolean;
 };
 
+type doctorType={
+  clinicId:string,
+name:string,
+specialized:string,
+qualification:string,
+experience:string,
+document:string,
+verified:boolean
+docVerified:boolean
+}
+
 interface initalInterface {
   petOwnerList: userList[];
   loading: boolean;
@@ -22,6 +32,7 @@ interface initalInterface {
   clinicList: userList[];
   status: string;
   message: string;
+  doctorsList:doctorType[]
 }
 
 const initialState: initalInterface = {
@@ -31,6 +42,7 @@ const initialState: initalInterface = {
   clinicList: [],
   status: "",
   message: "",
+  doctorsList:[]
 };
 
 export const getAllPetOwner = createAsyncThunk("user/getPetOwner", async () => {
@@ -94,6 +106,38 @@ export const AccountBlock = createAsyncThunk(
   }
 );
 
+// get all unverfied doctors
+export const UnverifiedDoctor = createAsyncThunk("user/UnverifiedDoctor", async () => {
+  try {
+    const datas = await axios.get(
+      "http://localhost:5000/admin/verfication-doctor",
+      setHeaders()
+    );
+    return datas.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+});
+
+// verified and reject
+type datas={
+  doctorId:string,
+  verified:string
+}
+export const checkVerification = createAsyncThunk("user/Verification", async (data:any) => {
+  try {
+    const datas = await axios.post(
+      "http://localhost:5000/admin/verified-profile",
+      data,
+      setHeaders()
+    );
+    return datas.data;
+  } catch (error: any) {
+    console.log(error.message);
+  }
+});
+
+
 export const userSclice = createSlice({
   name: "user",
   initialState,
@@ -106,6 +150,7 @@ export const userSclice = createSlice({
       state.status = action.payload.status;
       state.message = action.payload.message;
       state.petOwnerList = action.payload.usersList;
+      state.loading = false;
     });
     // get all grooming
     builder.addCase(getAllGroomings.pending, (state, action) => {
@@ -115,6 +160,7 @@ export const userSclice = createSlice({
       state.status = action.payload.status;
       state.message = action.payload.message;
       state.groomingList = action.payload.usersList;
+      state.loading = false;
     });
     // get all clinic
     builder.addCase(getAllClinic.pending, (state, action) => {
@@ -125,16 +171,31 @@ export const userSclice = createSlice({
       state.message = action.payload.message;
       state.clinicList = action.payload.usersList;
     });
+// get verification
+builder.addCase(UnverifiedDoctor.pending, (state, action) => {
+  state.loading = true;
+});
+builder.addCase(UnverifiedDoctor.fulfilled, (state, action) => {
+  console.log(action.payload,"verifivction")
+  state.loading = false;
+  state.status = action.payload.status;
+  state.message = action.payload.message;
+  state.doctorsList = action.payload.doctor;
 
-    // block and unblock
-    // builder.addCase(AccountBlock.pending, (state, action) => {
-    //   state.loading=true
+});
 
-    // });
-    // builder.addCase(AccountBlock.fulfilled, (state, action) => {
-    //   state.status=action.payload.status
-    //   state.message=action.payload.message
-    // });
+// verfied and reject 
+builder.addCase(checkVerification.pending, (state, action) => {
+  state.loading = true;
+});
+builder.addCase(checkVerification.fulfilled, (state, action) => {
+  state.loading = false;
+  state.status = action.payload.status;
+  state.message = action.payload.message;
+
+});
+
+
   },
 });
 

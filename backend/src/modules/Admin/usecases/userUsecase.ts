@@ -1,11 +1,12 @@
 import {
+  findAlldoctors,
   findallClinic,
   findallGrooming,
   findallUsers,
-  petOwnerAccount,
   updateClinicById,
   updateGroomingById,
   updatePetOwnerById,
+  findByIdUpdatedDoctor,
 } from "../repositories/userRepo";
 
 export const usersList = async () => {
@@ -74,6 +75,35 @@ export const checkBlockAccount = async (data: blockAccount) => {
       status: "success",
       message: "account blocked",
       account: updatedaccount,
+    };
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+// Get all unverified doctors
+
+export const getAllUnverifiedDoc = async (verified: string) => {
+  try {
+    const result = await findAlldoctors(verified);
+    return {
+      status: "success",
+      message: "doctors list",
+      doctor: result,
+    };
+  } catch (error: any) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateDoctorVerification = async (data: any) => {
+  try {
+    const { doctorId, ...updateValue } = data;
+    const doctor = await findByIdUpdatedDoctor(doctorId, updateValue);
+    return {
+      status: "success",
+      message: "doctors list",
+      doctor: doctor,
     };
   } catch (error: any) {
     throw new Error(error.message);

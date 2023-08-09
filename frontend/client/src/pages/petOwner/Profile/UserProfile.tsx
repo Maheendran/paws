@@ -1,7 +1,15 @@
 import React from "react";
+import Profile from "../../common/Profile/Profile";
 
 const UserProfile = () => {
-  return <div>UserProfile</div>;
+  return <>
+
+<Profile/>
+
+
+
+
+  </>;
 };
 
 export default UserProfile;

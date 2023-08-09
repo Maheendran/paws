@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-import Menu from "../../components/Menu/Menu";
-import DataTable from "../../components/DataTable/DataTable";
+import { useEffect, useState } from "react";
+
 import { useAppDispatch, useAppSelector } from "../../Redux/Store";
 import {
   AccountBlock,
@@ -10,6 +9,8 @@ import {
 } from "../../Redux/Slice/UserSlice";
 import "./Account.css";
 import { toast, Toaster } from "react-hot-toast";
+import DataTable from "../../components/DataTable/DataTable";
+
 const Accounts = () => {
   const dispatch = useAppDispatch();
   const { petOwnerList, loading, groomingList, clinicList } = useAppSelector(
@@ -24,9 +25,7 @@ const Accounts = () => {
     dispatch(getAllPetOwner()).then((data) => {
       setUserList(data.payload.usersList);
     });
-
     dispatch(getAllClinic());
-    console.log("middle");
     dispatch(getAllGroomings());
   }, [blocked]);
 
@@ -47,7 +46,7 @@ const Accounts = () => {
     }
   };
 
-  const itemsPerPage = 1;
+  const itemsPerPage = 2;
   const [currentPage, setCurrentPage] = useState(1);
 
   const handleNextPage = () => {
@@ -67,7 +66,7 @@ const Accounts = () => {
   });
 
   const handleBlocked = (id: string, accountType: string, blocked: boolean) => {
-    console.log(id, accountType, blocked);
+
     const data = {
       id,
       accountType,
@@ -75,8 +74,7 @@ const Accounts = () => {
     };
 
     dispatch(AccountBlock(data)).then((data) => {
-      console.log(data.payload?.account);
-
+   
       if (data.payload?.account.blocked) {
         toast.success("Blocked");
         setBlocked("upaed");
@@ -87,16 +85,15 @@ const Accounts = () => {
     });
   };
 
+
   return (
     <>
       <Toaster toastOptions={{ duration: 3000 }} />
       {loading && <p>Loding</p>}
-      <div className="container-fluid">
+      <div className="container-fluid mt-2">
         <div className="row">
-          <div className="col-3">
-            <Menu />
-          </div>
-          <div className="col-9 ">
+   
+          <div className="col-12 ">
             <div className="row ">
               <div className="col-3 mx-auto   text-center">
                 <button
@@ -113,8 +110,7 @@ const Accounts = () => {
                   onClick={() => handleAccount("Grooming")}
                   className={
                     accounttype === "Grooming" ? "active_heading" : "heading"
-                  }
-                >
+                  }>
                   Grooming
                 </button>
               </div>
@@ -123,15 +119,18 @@ const Accounts = () => {
                   onClick={() => handleAccount("Clinic")}
                   className={
                     accounttype === "Clinic" ? "active_heading" : "heading"
-                  }
-                >
+                  }>
                   Clinic
                 </button>
               </div>
             </div>
 
             <div className="row m-auto text-center">
+
+
               <DataTable dataList={displayData} handleBlocked={handleBlocked} />
+
+
             </div>
             <div className="row ">
               <div className="col-2 d-flex m-auto text-center mt-5">

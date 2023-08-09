@@ -1,0 +1,33 @@
+.doctor_side_box{
+    height: 87vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.profile_pic{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    height: 25vh;
+    border-radius: 5%;
+    overflow: hidden;
+}
+.profile_pic>img{
+    width: 100%;
+    height: 100%;
+}
+.doctors_list_box{
+    overflow-y: scroll;
+    height: 80vh;
+}
+.doctor_card{
+    height: 30vh;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.profile_edit_btn{
+    width: 30px;
+    height: 30px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    position: absolute;
+    top: 0px;
+    left: 5px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+}

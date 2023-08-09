@@ -2,34 +2,46 @@ import React, { useEffect } from "react";
 import { currentUserDetail } from "../../Redux/Slice/AuthSlice";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux/Store";
+import LoadingComp from "../loading/LoadingComp";
+import { getcurrentUser } from "../../Redux/Slice/UserDetailSlice";
 
 const GroomPR = (props: any) => {
-  const auth = useAppSelector((state) => state.auth);
-  useEffect(() => {
-    if (!auth.token) {
-      navigate("/choose-profile");
-    }
-    dispatch(currentUserDetail());
-  }, []);
-
+  const user = useAppSelector((state) => state.user);
   const { Component } = props;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const authcheck = () => {
-    if (auth?.choosePerson === "Grooming") {
-      <Outlet />;
-    } else {
-      if (auth?.choosePerson === "PetOwner") {
-        navigate("/pet-owner");
-      } else {
-        navigate("/clinic");
+  useEffect(() => {
+    dispatch(getcurrentUser()).then((data) => {
+      if (data.payload.status === "token") {
+        localStorage.removeItem("token");
+        return navigate("/register");
       }
-    }
-  };
-  authcheck();
+      if (data.payload.status === "success" && data.payload.userdata) {
+        if (data.payload.userdata?.blocked===true) {
+          localStorage.removeItem("token");
+          navigate("/register");
+        }
+        if(data.payload.userdata.accountType==='PetOwner'){
+          navigate("/pet-owner");
+        }
+        else if(data.payload.userdata.accountType==='Clinic'){
+          navigate("/clinic");
+        }else{
+          <Outlet />;
+        }
+      } 
+    });
+  }, []);
   return (
     <div>
+
+      {user.userloading ? <LoadingComp/>:
+      <>
+          {/* <ClinicNav/> */}
       <Component />
+      </>
+  
+  }
     </div>
   );
 };

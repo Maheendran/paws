@@ -1,0 +1,10 @@
+.profile_dr_image{
+    /* border: 2px solid; */
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 10px;
+}
+.doctor_doc_img{
+    height: 20vh;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+border-radius: 10px;
+}

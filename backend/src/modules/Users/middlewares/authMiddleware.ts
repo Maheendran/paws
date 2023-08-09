@@ -20,7 +20,14 @@ export const checkIsUserAuthenticated = async (
       accountType: string;
       email: string;
     };
+
     req.user = decoded;
+
+    if (decoded.accountType === "admin") {
+      res
+        .status(404)
+        .send({ status: "error", message: "Invalid auth token..." });
+    }
     next();
   } catch (ex) {
     res.status(404).send("Invalid auth token...");

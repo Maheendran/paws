@@ -9,10 +9,23 @@ const OtpPR = (props: any) => {
   const dispatch = useAppDispatch();
   const auth = useAppSelector((state) => state.auth);
   useEffect(() => {
-    if (!auth.otpVerified && !auth.token) {
-      navigate("/choose-profile");
-    }
     dispatch(currentUserDetail());
+    if (!auth.otpVerified && !auth.token) {
+    return  navigate("/choose-profile");
+    }
+    if (!auth.token) {
+      <Outlet />;
+    } else {
+      if (auth?.choosePerson === "PetOwner") {
+        navigate("/pet-owner");
+      } else {
+        if (auth?.choosePerson === "Clinic") {
+          navigate("/clinic");
+        } else {
+          navigate("/grooming");
+        }
+      }
+    }
   }, []);
 
   return (

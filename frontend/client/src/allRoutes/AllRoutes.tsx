@@ -7,10 +7,8 @@ import Registration from "../pages/common/registration/Registration";
 import OtpPage from "../pages/common/otpPage/OtpPage";
 import PrivateOtproute from "../components/ProtetctedRoutes/PrivateOtproute";
 import HomePage from "../pages/petOwner/HomePage/HomePage";
-
 import PetOwnerPR from "../components/ProtetctedRoutes/PetOwnerPR";
 import ClinicHome from "../pages/clinic/HomePage/ClinicHome";
-import ClinicProfile from "../pages/clinic/Profile/ClinicProfile";
 import ClinicPR from "../components/ProtetctedRoutes/ClinicPR";
 import GroomHome from "../pages/Groom/Homepage/GroomHome";
 import GroomProfile from "../pages/Groom/Profile/GroomProfile";
@@ -21,6 +19,11 @@ import ForgotPass from "../pages/common/ForgotPass/ForgotPass";
 import Profile from "../pages/common/Profile/Profile";
 import CommonPR from "../components/ProtetctedRoutes/CommonPR";
 import Verification from "../pages/common/Verfication/Verification";
+import DoctorPage from "../pages/clinic/Doctors/DoctorPage";
+import BookingPage from "../pages/clinic/Booking/BookingPage";
+import SearchPage from "../pages/common/SearchPage/SearchPage";
+import ClinicDetail from "../pages/petOwner/ServiceDetails/ClinicDetail";
+import GroomingDetail from "../pages/petOwner/ServiceDetails/GroomingDetail";
 
 const AllRoutes = () => {
   return (
@@ -38,31 +41,36 @@ const AllRoutes = () => {
         <Route path="/reset-password" element={<ForgotPass />} />
         <Route path="/otp" element={<OtpPR Component={OtpPage} />} />
 
-        {/* PetOwner */}
-
+        {/*================= PetOwner================== */}
         <Route
           path="/pet-owner"
           element={<PetOwnerPR Component={HomePage} />}
         />
-
-        {/* clinic */}
-
-        <Route path="/clinic" element={<ClinicPR Component={ClinicHome} />} />
         <Route
-          path="/clinic-profile"
-          element={<ClinicPR Component={ClinicProfile} />}
+          path="/search/:type"
+          element={<PetOwnerPR Component={SearchPage} />}
+        />
+        <Route
+          path="/clinic-detail/:service/:id"
+          element={<PetOwnerPR Component={ClinicDetail} />}
+        />
+        <Route
+          path="/grooming-detail/:service/:id"
+          element={<PetOwnerPR Component={GroomingDetail} />}
         />
 
-        {/* grooming */}
+        {/* ====================grooming========================== */}
         <Route path="/grooming" element={<GroomPR Component={GroomHome} />} />
         <Route path="/groom-profile" element={<GroomProfile />} />
 
-        {/* common page */}
-
+        {/* ====================common page===================== */}
         <Route path="/userprofile" element={<CommonPR Component={Profile} />} />
         <Route path="/verification" element={<Verification />} />
-
         <Route path="/*" element={<ErrorPage />} />
+
+        {/* ==============================clinic ===========================*/}
+        <Route path="/doctors" element={<ClinicPR Component={DoctorPage} />} />
+        <Route path="/clinic" element={<ClinicPR Component={BookingPage} />} />
       </Routes>
     </>
   );

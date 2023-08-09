@@ -282,7 +282,6 @@ export const loginClinic = async (datas: loginInterface) => {
     throw new Error(error.message);
   }
 };
-
 //========================== otp verification=================//
 export const GroomUserOtp = async (data: GroomInterface) => {
   try {
@@ -339,7 +338,6 @@ export const ClinicOwnerOtp = async (data: ClinicInterface) => {
     throw new Error(error.message);
   }
 };
-
 //========================== resend otp=================//
 export interface ReOtpInterface {
   id: string;
@@ -538,15 +536,14 @@ export const googleGroom = async (datas: GroomInterface) => {
   }
 };
 
-// forgot password otp
+//=========== forgot password otp
 export interface forgotOtpInterface {
   id: string;
   accountType: string;
   email: string;
   password: string;
 }
-
-// forgot password otp resend===========================
+//============== forgot password otp resend===========================
 export const forgotUserOtp = async (datas: forgotOtpInterface) => {
   try {
     const profileExist = await forgotpassUser(datas.email);
@@ -600,7 +597,6 @@ export const forgotGroomOtp = async (datas: forgotOtpInterface) => {
     throw new Error(error.message);
   }
 };
-
 export const forgotClinicOtp = async (datas: forgotOtpInterface) => {
   try {
     const profileExist = await forgotpassClinic(datas.email);
@@ -629,7 +625,7 @@ export const forgotClinicOtp = async (datas: forgotOtpInterface) => {
   }
 };
 
-// reset password otp resend===========================
+//==================== reset password otp resend===========================
 
 export const resetPasswordUser = async (datas: forgotOtpInterface) => {
   try {

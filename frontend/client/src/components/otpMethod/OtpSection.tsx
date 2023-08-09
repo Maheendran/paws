@@ -82,7 +82,7 @@ const OtpSection: React.FC<{ email: string }> = ({ email }) => {
     <>
       <Toaster toastOptions={{ duration: 3000 }} />
 
-      <div className="col-3 m-auto  mt-5 otp_container">
+      <div className="col-4 m-auto  mt-5 otp_container">
         <div className="d-flex justify-content-center align-items-center container">
           <div className=" py-5 px-3">
             <h1
@@ -100,7 +100,7 @@ const OtpSection: React.FC<{ email: string }> = ({ email }) => {
             </span>
 
             <div className="d-flex flex-row mt-3">
-              <div className="col-7 d-flex flex m-auto">
+              <div className="col-9 d-flex flex m-auto">
                 <input
                   type="text"
                   className="form-control text-center"

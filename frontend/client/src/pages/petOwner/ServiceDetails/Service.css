@@ -1,0 +1,67 @@
+.store_card{
+    height: 40vh;
+
+}
+.store_profile_box{
+    width: 200px;
+    height: 200px;
+    border: 2px solid rgb(87, 88, 87);
+    border-radius: 50%;
+overflow: hidden;
+box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+transition: 0.5s ease-in-out;
+}
+.store_profile_box:hover{
+    transform: scale(1.1);
+}
+.store_profile_box img{
+    width: 100%;
+    height: 100%;
+    transform: scale(1.3);
+}
+.store_date{
+padding: 10px;
+border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.booked{
+    background-color: rgb(63, 58, 58);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+}
+.unbooked{
+    background-color: rgb(67, 201, 5);
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    transition: 0.5s ease-in-out;
+}
+.unbooked:hover{
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.doctor_pic{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+}
+.doctor_pic img{
+    width: 100%;
+    height: 100%;
+}
+.booking_btn{
+    width: 100%;
+    background-color: rgb(236, 202, 68);
+    padding: 10px;
+    border-radius: 50% 50% 0% 0%;
+    color: white;
+}
+
+.selected-doctor{
+    border: 2px solid grey;
+    box-shadow: rgba(3, 3, 3, 0.35) 0px 5px 15px;
+}

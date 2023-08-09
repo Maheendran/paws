@@ -16,7 +16,7 @@ interface currentState {
   choosePerson: string;
 }
 const initialState: currentState = {
-  token: localStorage.getItem("token") || "",
+  token: localStorage.getItem("admin-token") || "",
   loading: false,
   status: "",
   message: "",
@@ -55,7 +55,7 @@ export const PersonSlice = createSlice({
       return state;
     },
     logoutUser: (state) => {
-      localStorage.removeItem("token");
+      localStorage.removeItem("admin-token");
       return {
         token: "",
         status: "",
@@ -70,7 +70,7 @@ export const PersonSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(loginAdmin.fulfilled, (state, action) => {
-      localStorage.setItem("token", action.payload.token);
+      localStorage.setItem("admin-token", action.payload.token);
       state.token = action.payload.token;
       state.status = action.payload.status;
       state.message = action.payload.message;

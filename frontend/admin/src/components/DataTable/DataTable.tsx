@@ -4,7 +4,7 @@ import "./DataTable.css";
 const DataTable = ({ dataList, handleBlocked }: any) => {
   return (
     <>
-      <div className="row mt-3">
+      <div className="row mt-3 mx-auto">
         <div className="col-12 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
@@ -37,7 +37,7 @@ const DataTable = ({ dataList, handleBlocked }: any) => {
                         >
                           <img
                             className="img-fluid "
-                            src="https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png"
+                            src={e.profileImage? e.profileImage: "https://cdn3.iconfinder.com/data/icons/vector-icons-6/96/256-1024.png"}
                             alt=""
                           />
                         </td>

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "./Verification.css";
-import { useAppDispatch } from "../../../Redux/Store";
 
 const Verification: React.FC = () => {
   const [formdata, setFormdata] = useState({

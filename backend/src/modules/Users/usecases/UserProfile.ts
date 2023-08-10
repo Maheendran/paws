@@ -472,7 +472,6 @@ export const bookingClinic = async (
           },
         ],
       };
-      console.log(slotdata, "slot=====================");
       const slot = await saveClinicSlot(slotdata);
 
       return {

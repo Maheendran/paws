@@ -134,7 +134,7 @@ const handleCall=(result: string | ArrayBuffer | null)=>{
     <>
       <Toaster toastOptions={{ duration: 3000 }} />
 {userloading && <LoadingComp/>}
-      <section className="vh-70 " >
+      <section className="vh-70 mt-5" >
       <div className="container-fluid  h-70">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col col-lg-12 mb-4 mb-lg-0">
@@ -145,8 +145,7 @@ const handleCall=(result: string | ArrayBuffer | null)=>{
                   <img src={currentUser.profileImage? currentUser.profileImage: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"}
                     alt="Avatar"
                     className="img-fluid my-5 profile_pic_sec"
-                  
-                    onClick={handleprofilepopup} />
+                     onClick={handleprofilepopup} />
 
                  <input  type="file"
                   accept="image/*"

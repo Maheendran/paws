@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../Redux/Store'
 import {  BookClinicSlot, cancellingslot, getDoctorTimeslot, getclinicDetail } from '../../../Redux/Slice/ServiceSlice'
@@ -16,11 +16,23 @@ const dispatch=useAppDispatch()
 const [date,setDate]=useState("")
 const [time,setTime]=useState("")
 const [doctorId,setDoctorId]=useState('')
+const dateInputRef = useRef<HTMLInputElement>(null); 
+
 
     useEffect(()=>{
+      if (dateInputRef.current) {
+        const currentDate = new Date().toISOString().split('T')[0];
+        dateInputRef.current.min = currentDate;
+      }
+
+
+
+
       const service = params.service || '';
       const clinicId = params.id || '';
 dispatch(getclinicDetail({service,clinicId}))
+
+
     },[])
 const handleDoctorTime=(doctorId:string)=>{
 setDoctorId(doctorId)
@@ -36,9 +48,11 @@ setDate(standardDateFormat)
 const formdata={
   date,clinicId,doctorId
 }
-
 dispatch(getDoctorTimeslot(formdata))
 }
+
+
+
 
 //============== handle booking======================
 const handlebooking=()=>{
@@ -101,7 +115,6 @@ const handleCancelBook=(time:string)=>{
     if (result.isConfirmed) {
 
  const clinicId=params.id
-
   const formdata={
     date,clinicId,doctorId,time
   }
@@ -122,6 +135,9 @@ dispatch(getDoctorTimeslot(formdata)).then((data)=>{
 }) }
   })
 }
+
+
+
 
   return (
     <>
@@ -153,31 +169,31 @@ dispatch(getDoctorTimeslot(formdata)).then((data)=>{
 
 
 <div className="col-3 mx-auto mt-3 ">
-   <input className='form-control' type="date" onChange={(e)=>setDate(e.target.value)}  required/>
+   <input className='form-control' type="date"  ref={dateInputRef} onChange={(e)=>setDate(e.target.value)}  required/>
 </div>
-
   </div>
   <h4 className='text-center mt-5'>Choose doctor</h4>
 
   <div className="row d-flex justify-content-center">
 
-  {serviceDetail[0]?.doctorlist.map((data:any)=>(
-    <>
-    <div className="col-4 ">
-       <div 
-       className={` mx-auto text-center doctor_pic ${doctorId === data._id ? 'selected-doctor' : ''}`}
-       
-       onClick={()=>handleDoctorTime(data._id)}>
-      <img src="https://www.pngitem.com/pimgs/m/198-1985222_avatar-doctor-png-transparent-png.png" alt="" />
-</div>  
-<div className="col-12 text-center">
-  <p>{data.name}</p>
-  <p> Experience: {data.experience}</p>
-  </div>
+  {serviceDetail[0]?.doctorlist.map((data:any)=>{
+if (data.verified==="verified") {
+  return (
+    <div className="col-4" key={data._id}>
+      <div 
+        className={`mx-auto text-center doctor_pic ${doctorId === data._id ? 'selected-doctor' : ''}`}
+        onClick={() => handleDoctorTime(data._id)}>
+        <img src={data.profileImage? data.profileImage:"https://www.pngitem.com/pimgs/m/198-1985222_avatar-doctor-png-transparent-png.png"} alt="" />
+      </div>  
+      <div className="col-12 text-center">
+        <p>{data.name}</p>
+        <p>Experience: {data.experience}</p>
+      </div>
     </div>
-    </>
-
-))}
+  );
+}
+return null; 
+  })}
 
   </div>
   {/* =======================choose date==========================*/}
@@ -191,8 +207,9 @@ dispatch(getDoctorTimeslot(formdata)).then((data)=>{
 <div className="row">
 {allTimes.map((time, index) => {
 
-        const isCurrentUser = timeslots[0]?.Bookings.some((slot:any) => slot.time === time && slot.user_id === user.currentUser._id);
-        const isnotCurrentUser = timeslots[0]?.Bookings.some((slot:any) =>slot.time === time );
+        const isCurrentUser = timeslots[0]?.Bookings.some((slot:any) => slot.time === time 
+        && slot.user_id === user.currentUser._id && slot.status!=="cancelled" );
+        const isnotCurrentUser = timeslots[0]?.Bookings.some((slot:any) =>slot.time === time && slot.status!=="cancelled" );
         
         return (
           <div className="col-1 m-auto" key={index}>
@@ -228,16 +245,16 @@ dispatch(getDoctorTimeslot(formdata)).then((data)=>{
     <div className="col-6 mx-auto text-center">
     
 <div className="row m-4">
-    <h3>Fore more details</h3>
+    <h3>For more details</h3>
 </div>
 <div className="row">
    <div className="col-6 text-start">
 
-    <p>Contact number :  <span className='text-muted'>{serviceDetail[0]?.address[0]?.mobile}</span> </p>
     <p>Address: <span className='text-muted'>{serviceDetail[0]?.address[0]?.adressLine}</span> </p>
     <p>City: <span className='text-muted'>{serviceDetail[0]?.address[0]?.city}</span> </p>
     <p>Country: <span className='text-muted'>{serviceDetail[0]?.address[0]?.country}</span> </p>
     <p>Pincode: <span className='text-muted'>{serviceDetail[0]?.address[0]?.pincode}</span> </p>
+    <p>Contact number :  <span className='text-muted'>{serviceDetail[0]?.address[0]?.mobile}</span> </p>
    </div>
    <div className="col-4 ms-auto">
 <img className='img-fluid' src="https://www.millcreekvet.ca/wp-content/uploads/2021/07/doktorka.png" alt="" />

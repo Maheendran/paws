@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './DoctorPage.css'
 import { BiMessageSquareEdit } from 'react-icons/bi';
 import { AiFillDelete,AiFillCloseCircle } from 'react-icons/ai';
@@ -9,6 +9,7 @@ import { CreateDoctor, DocotorDelete, GetallDoctors, UpdateDoctor, doctorDetail 
 import { useForm } from "react-hook-form";
 import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
+import LoadingComp from '../../../components/loading/LoadingComp';
 
 const schema = Joi.object({
   name: Joi.string().min(3).max(20).label("name"),
@@ -86,7 +87,7 @@ useEffect(()=>{
   const [formValues, setFormValues] = useState({});
   const [showmodal, setShowmodal] = useState(false);
   const [chooseDoctor,setChooseDoctor]=useState<doctorDetail | undefined>(undefined)
-  const {doctorsList}=useAppSelector((state)=>state.doctor)
+  const {doctorsList,doctorloading}=useAppSelector((state)=>state.doctor)
 
   
   const handleInputChange = (event: any) => {
@@ -100,17 +101,19 @@ useEffect(()=>{
     setShowmodal(!showmodal);
   };
   const [document,setDocument]=useState<String | ArrayBuffer | null>('')
-
+  const [profile,setProfile]=useState<String | ArrayBuffer | null>('')
   const dispatch=useAppDispatch()
 
 // create new doctor
   const handlecreateDoctor = (data: any) => {
     data.document=document
+    data.profileImage=profile
     dispatch(CreateDoctor(data)).then((data)=>{
       if(data.payload?.status){
          toast.success("New profile created")
          dispatch(GetallDoctors())
          reset()
+         setProfile("")
       }
      
     })
@@ -144,24 +147,53 @@ if(data.payload.status){
     reader.readAsDataURL(file);
     reader.onload = () => {
       const result = reader.result;
-        setDocument(result);
-       
+        setDocument(result);  
     };
   }
+
+  const fileInputRef:any=useRef()
+  const handleprofilepopup=()=>{
+    fileInputRef.current.click()
+  }
+
+  const handleprofileChange=(e:any)=>{
+const { files } = e.target;
+    const file = files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => {
+      const result = reader.result;
+      setProfile(result); 
+  }
+}
+
+
 
   return (
     <>
        <Toaster toastOptions={{ duration: 3000 }} />
+
+{doctorloading && <LoadingComp/>}
+
     <div className='container-fluid'>
  
 <div className="row ">
   <div className="col-6 doctor_side_box mx-auto">
   <h3 className='text-center mb-3'>Add doctor</h3>
-<div className="profile_pic col-3 mx-auto mt-2">
-  <img  src="https://cdn3.iconfinder.com/data/icons/medical-and-health-2-13/52/190-1024.png" alt="" />
-</div>
-
   <form  onSubmit={handleSubmit((data) => handlecreateDoctor(data))}>
+
+<div className="profile_pic col-3 mx-auto mt-2">
+  <img  src={profile? profile.toString(): "https://cdn3.iconfinder.com/data/icons/medical-and-health-2-13/52/190-1024.png"}
+  alt="" 
+   onClick={handleprofilepopup}/>
+</div>
+<input  type="file"
+                  accept="image/*"
+                  style={{ display: 'none'}} ref={fileInputRef}   onChange={handleprofileChange}/>
+  
+
+
+
 <div className="row">
 
     <div className="col-6 mt-2">
@@ -246,10 +278,10 @@ if(data.payload.status){
 </div>
  </div>
   <div className="col-8">
-    <p>name:  <span>{e.name}</span> </p>
-    <p>specialized:  <span>{e.specialized}</span> </p>
-    <p>qualification:  <span>{e.qualification}</span> </p>
-    <p>experience:  <span>{e.experience}</span> </p>
+    <p>Name:  <span>{e.name}</span> </p>
+    <p>Specialized:  <span>{e.specialized}</span> </p>
+    <p>Qualification:  <span>{e.qualification}</span> </p>
+    <p>Experience:  <span>{e.experience}</span> </p>
 
   </div>
   <div className="col-1 ">
@@ -266,6 +298,7 @@ if(data.payload.status){
     </div>
   </div></div>
 </div>
+
 
   
     {showmodal &&(

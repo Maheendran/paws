@@ -99,8 +99,8 @@ type formdataType={
   date:string
   time:string
   bookingId:string
-
 }
+
 export const BookClinicSlot = createAsyncThunk(
   "service/BookClinicSlot",
   async (formdata:Partial<formdataType>) => {

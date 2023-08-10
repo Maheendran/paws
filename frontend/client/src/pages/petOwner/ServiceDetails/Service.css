@@ -5,7 +5,7 @@
 .store_profile_box{
     width: 200px;
     height: 200px;
-    border: 2px solid rgb(87, 88, 87);
+    /* border: 2px solid rgb(87, 88, 87); */
     border-radius: 50%;
 overflow: hidden;
 box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;

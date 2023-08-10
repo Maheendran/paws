@@ -3,12 +3,7 @@ import Profile from "../../common/Profile/Profile";
 
 const UserProfile = () => {
   return <>
-
 <Profile/>
-
-
-
-
   </>;
 };
 

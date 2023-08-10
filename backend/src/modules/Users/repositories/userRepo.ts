@@ -295,8 +295,25 @@ export const getAllClinic = async () => {
     throw new Error(error.message);
   }
 };
-export const getAllGrooming = async () => {
-  return await GroomModel.find({ verified: true });
+export const getAllGrooming = async () => { try {
+  const clinics = await GroomModel.aggregate([
+    {
+      $match: { verified: true },
+    },
+    {
+      $lookup: {
+        from: "addresses",
+        localField: "_id",
+        foreignField: "userId",
+        as: "address",
+      },
+    },
+  ]);
+  return clinics;
+} catch (error: any) {
+  throw new Error(error.message);
+}
+
 };
 
 //************* */ get clinic with check with address===============================

@@ -4,6 +4,7 @@ export interface clinicSlotInterface extends Document {
     date: string;
     clinicId: string;
     doctorId: string;
+    
     Bookings: {
       user_id: string;
       time: string;

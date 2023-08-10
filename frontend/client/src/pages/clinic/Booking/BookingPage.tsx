@@ -148,25 +148,24 @@ dispatch(getDoctorTimeslot(formdata)).then((data)=>{
   <h4 className='text-center mt-5'>Choose doctor</h4>
 
   <div className="row d-flex justify-content-center">
-
-  {doctorsList.map((data:any)=>(
-    <>
-    <div className="col-4 " key={data._id}>
-       <div 
-       className={` mx-auto text-center doctor_pic ${doctorId === data._id ? 'selected-doctor' : ''}`}
-       
-       onClick={()=>handleDoctorTime(data._id)}>
-      <img src="https://www.pngitem.com/pimgs/m/198-1985222_avatar-doctor-png-transparent-png.png" alt="" />
-</div>  
-<div className="col-12 text-center">
-  <p>{data.name}</p>
-  <p> Experience: {data.experience}</p>
-  </div>
-    </div>
-    </>
-
-))}
-
+{doctorsList.map((data:any) => {
+  if (data.verified==="verified") {
+    return (
+      <div className="col-4" key={data._id}>
+        <div 
+          className={`mx-auto text-center doctor_pic ${doctorId === data._id ? 'selected-doctor' : ''}`}
+          onClick={() => handleDoctorTime(data._id)}>
+          <img src={data.profileImage? data.profileImage:"https://www.pngitem.com/pimgs/m/198-1985222_avatar-doctor-png-transparent-png.png"} alt="" />
+        </div>  
+        <div className="col-12 text-center">
+          <p>{data.name}</p>
+          <p>Experience: {data.experience}</p>
+        </div>
+      </div>
+    );
+  }
+  return null; 
+})}
   </div>
   {/* =======================choose date==========================*/}
 

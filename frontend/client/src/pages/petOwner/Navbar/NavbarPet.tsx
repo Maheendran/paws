@@ -7,8 +7,9 @@ import { FaRupeeSign } from "react-icons/fa";
 import { useAppDispatch } from "../../../Redux/Store";
 import { logoutUser } from "../../../Redux/Slice/AuthSlice";
 const NavbarPet: React.FC = () => {
+  
   const handleservice = (value: string) => {
-    if (value === "clinic") {
+    if (value === "clinic"){
       navigate("/search/clinic");
     } else {
       navigate("/search/grooming");

@@ -39,7 +39,7 @@ const Verification = () => {
       setBlocked("");
     }
   };
-  const itemsPerPage = 1;
+  const itemsPerPage = 2;
 
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
@@ -87,45 +87,13 @@ const Verification = () => {
       <div className="container-fluid mt-2">
         <div className="row">
           <div className="col-12 ">
-            {/* <div className="row ">
-              <div className="col-3 mx-auto   text-center">
-                <button
-                  onClick={() => handleAccount("PetOwner")}
-                  className={
-                    accounttype === "PetOwner" ? "active_heading" : "heading"
-                  }>
-
-                  Clinic
-
-                </button>
-              </div>
-              <div className="col-3 mx-auto text-center">
-                <button
-                  onClick={() => handleAccount("Grooming")}
-                  className={
-                    accounttype === "Grooming" ? "active_heading" : "heading"
-                  }>
-                  Doctors { displayData.length>0 ?(1):""}
-                </button>
-              </div>
-              <div className="col-3 mx-auto text-center">
-                <button
-                  onClick={() => handleAccount("Clinic")}
-                  className={
-                    accounttype === "Clinic" ? "active_heading" : "heading"
-                  }>
-                  Grooming
-                </button>
-              </div>
-            </div> */}
+   
             <div className="row m-auto text-center ">
               <div className="container-fluid ">
                 {displayData.map((data: any) => (
                   <div className="row mt-2" key={data._id}>
                     <div className="col-2 profile_dr_image">
-                      <img
-                        className="img-fluid"
-                        src="https://th.bing.com/th/id/OIP.IVwf85npYYUcwRp4EIhqDgHaJm?pid=ImgDet&rs=1"
+                    <img  className="img-fluid" src={data.profileImage? data.profileImage: "https://cdn3.iconfinder.com/data/icons/medical-and-health-2-13/52/190-1024.png"}
                         alt=""
                       />
                     </div>

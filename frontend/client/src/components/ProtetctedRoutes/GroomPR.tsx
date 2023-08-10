@@ -4,6 +4,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../Redux/Store";
 import LoadingComp from "../loading/LoadingComp";
 import { getcurrentUser } from "../../Redux/Slice/UserDetailSlice";
+import GroomProfile from "../../pages/Groom/Profile/GroomProfile";
 
 const GroomPR = (props: any) => {
   const user = useAppSelector((state) => state.user);
@@ -37,7 +38,8 @@ const GroomPR = (props: any) => {
 
       {user.userloading ? <LoadingComp/>:
       <>
-          {/* <ClinicNav/> */}
+  
+          <GroomProfile/>
       <Component />
       </>
   

@@ -19,7 +19,7 @@ export const checkIsUserAuthenticated = async (
       _id: string;
       accountType: string;
       email: string;
-    };
+    }
 
     req.user = decoded;
 

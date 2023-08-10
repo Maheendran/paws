@@ -55,10 +55,13 @@ userRoute.post("/delete-doctor", checkIsUserAuthenticated, deleteDoctors);
 userRoute.get("/nerest-services/:service", checkIsUserAuthenticated,nerestService);
 userRoute.get("/searching", checkIsUserAuthenticated, searchByUser);
 userRoute.get("/service-detail/:service/:id",checkIsUserAuthenticated,serviceDetail);
+
 //============ get doctor time slot==============
 userRoute.post("/doctor-timeslot", checkIsUserAuthenticated, doctorTimeslot);
+
 // ===========booking clinic===========
 userRoute.post("/booking-clinic", checkIsUserAuthenticated, clinicBooking);
+
 // ==========cancel clinic booking======
 userRoute.post("/cancel-booking", checkIsUserAuthenticated, cancelBooking);
 

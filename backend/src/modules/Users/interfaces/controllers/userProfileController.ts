@@ -140,12 +140,16 @@ export const getAddress = async (req: AuthenticatedRequest, res: Response) => {
 export const addDoctor = async (req: AuthenticatedRequest, res: Response) => {
   try {
     if (req.user?.accountType === "Clinic") {
+      if (req.body.profileImage) {
+        const value = req.body.profileImage;
+        const uploadResponse = await cloudinary.v2.uploader.upload(value);
+        req.body.profileImage = uploadResponse.url;
+      }
       if (req.body.document) {
         const value = req.body.document;
         const uploadResponse = await cloudinary.v2.uploader.upload(value);
         req.body.document = uploadResponse.url;
       }
-
       const data = {
         ...req.body,
         clinicId: req.user._id,
